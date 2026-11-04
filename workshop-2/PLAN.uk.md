@@ -7,7 +7,7 @@
 
 **Результат для студентів:** вони вміють вбудувати ШІ в щоденний цикл розробки в IDE — а не носити шматки коду у вебчат і назад.
 
-**Формат:** 80 хв, онлайн, та сама аудиторія. Основні інструменти — **Claude Code** і **Gemini** (Gemini CLI + Gemini Code Assist у VS Code): вони є в усіх студентів. Copilot — у частини, тому згадуємо як «те саме, інші файли». Структура як у воркшопі 1: теги `step-NN`, `go.sh`, кілька живих демо, решта — з готових тегів. Репозиторій — форк `github.com/Kenadar/dev-match-workshop`.
+**Формат:** 80 хв, онлайн, та сама аудиторія. Основні інструменти — **Claude Code** і **Gemini** (Gemini CLI + Gemini Code Assist у VS Code): вони є в усіх студентів. Copilot — у частини, тому в IDE згадуємо як «те саме, інші файли»; **рев'ю на PR показує ведучий через Copilot code review** (на Copilot Free його немає). Структура як у воркшопі 1: теги `step-NN`, `go.sh`, кілька живих демо, решта — з готових тегів. Репозиторій — форк `github.com/Kenadar/dev-match-workshop`.
 
 ---
 
@@ -34,7 +34,8 @@
 | Inline-правка | — | Code Assist: виділити → «Gemini: Generate/Transform code» | одна функція, одна зміна, видно diff на місці |
 | Чат з контекстом | `claude` у терміналі IDE, `@file` | Code Assist chat (`@file`), `gemini` у терміналі (`@path`) | питання про код, пояснення, план |
 | Агент на кілька файлів | `claude`, plan mode, `/implement-story` | Code Assist agent mode, Gemini CLI | вертикальний зріз історії: схема → сервіс → роут → тест → сторінка |
-| Рев'ю | агент `architecture-reviewer`, `/code-review` | Gemini Code Assist GitHub app на PR (`/gemini review`) | перед мерджем |
+| Рев'ю локально | агент `architecture-reviewer`, `/code-review` | `/arch-review` (Gemini CLI) | до PR — кожен студент, без підписок |
+| Рев'ю на PR | Copilot code review (ведучий): Reviewers → Copilot → Request | — | друга лінія, перед мерджем |
 
 Copilot (для тих, у кого є) — ті самі рівні: Tab/NES, Cmd+I, Chat, Agent mode, Copilot code review.
 🎤 Інструменти різні, **рівні однакові** — студент має знати, на якому рівні він зараз працює, а не який бренд відкрив.
@@ -90,8 +91,8 @@ Copilot (для тих, у кого є) — ті самі рівні: Tab/NES, C
 - `.gemini/settings.json` → `context.fileName: ["AGENTS.md", "GEMINI.md"]`.
 - `.gemini/commands/{implement-story,check-story,unit-tests,e2e-tests,adr}.toml` — **не копії** скілів: кожна команда вставляє `@{.claude/skills/<name>/SKILL.md}` і підставляє `{{args}}`.
 - `.gemini/commands/arch-review.toml` — те саме для агента `architecture-reviewer` + `!{git diff main...HEAD}`.
-- `.gemini/styleguide.md` — правила для Gemini-рев'ю на GitHub PR. Єдине місце з дублюванням: бот на PR не читає інших файлів. 🎤 Це чесна ціна, назвати її.
-- Copilot: окремого файлу немає — Copilot у VS Code сам читає `AGENTS.md` (перевірити напередодні).
+- Copilot: окремого файлу немає. За документацією GitHub, **Copilot code review на PR читає `AGENTS.md` (найближчий у дереві), а також `CLAUDE.md` / `GEMINI.md`** з гілки PR. 🎤 «Один `AGENTS.md` — і його читають Claude, Gemini та рев'юер на GitHub.»
+- (`.gemini/styleguide.md` був у `step-07…10`, прибраний у `step-10`: він потрібен лише enterprise-версії Gemini на GitHub, яка вимагає Google Cloud з білінгом — не для студентів.)
 
 🎤 **Історія для сцени — «контекст застаріває»:** під час переносу правил виявилось, що `.claude/rules/api.md` з воркшопу 1 вчив `new ApiError(status, code, message)` і посилався на `MESSAGES.roleFilled`. У коді конструктор — `ApiError(code, message, details?)`, а `roleFilled` не існує. Модель, яка слухається цього правила, писала б код, що не компілюється, — і це була б «помилка ШІ». Виправлено в `step-07`: `go.sh diff 6 7` показує цей рядок.
 
@@ -148,7 +149,7 @@ Copilot (для тих, у кого є) — ті самі рівні: Tab/NES, C
 
 🖥 Порядок:
 1. Студенти 2 хв дивляться дифф самі (посилання в чат) — хто що знайшов, у чат.
-2. Gemini Code Assist на PR у форку (GitHub app, коментар `/gemini review`) — що знайшов загальний рев'юер. Хто має Copilot — те саме через Copilot code review.
+2. Copilot code review на PR у форку (ведучий: Reviewers → Copilot → Request). Він читає `AGENTS.md` з гілки PR — тобто це вже не «загальний» рев'юер. Опційно до/після: Settings → Copilot → Code review → «Use custom instructions when reviewing pull requests» вимкнути / увімкнути.
 3. Агент `architecture-reviewer` (Gemini: `/arch-review`) — ті самі три, але кожен з посиланням на ADR/документ і з правильним пріоритетом; плюс «traceability каже Done, а тесту на гонку немає». 🎤 **Чесно:** на цьому PR загальний рев'юер теж знайшов усі три — але витік паролів назвав «medium, може розкрити». Різниця не в *що*, а в *наскільки серйозно і чому* — і в тому, що бачить лише той, хто читав ваші документи. Повна таблиця: `workshop-2/demo/10-review-results.md`.
 4. Для кожного дефекту — **не вірити рев'юеру на слово**: коміт «tests that prove the findings» → 4 з 11 червоні (гонка: два `APPROVED`, лічильник 0). Потім коміт з виправленням → 11/11 зелені.
 
@@ -218,10 +219,10 @@ Copilot (для тих, у кого є) — ті самі рівні: Tab/NES, C
 |---|---|---|
 | `workshop-2/antipattern/` | заготовлена відповідь вебчату на US-01 з розміткою порушень | один прогін у вебчаті, зберегти як є |
 | — ✅ | remote `origin` → форк `Kenadar/dev-match-workshop`, старий — `upstream`; теги `step-00…06` поставлено на наявні коміти (тегів не було ні в одному репо) | зроблено |
-| `step-07` ✅ | `AGENTS.md`, `CLAUDE.md` з імпортом, `apps/*/AGENTS.md` + `CLAUDE.md`, `.gemini/settings.json`, `.gemini/commands/*.toml`, `.gemini/styleguide.md` | зроблено |
+| `step-07` ✅ | `AGENTS.md`, `CLAUDE.md` з імпортом, `apps/*/AGENTS.md` + `CLAUDE.md`, `.gemini/settings.json`, `.gemini/commands/*.toml` (+ `.gemini/styleguide.md`, прибраний у `step-10`) | зроблено |
 | `step-08` ✅ | Auth + US-01, 50 тестів, traceability з таблицею припущень, api.md/data-model оновлені після рев'ю; `workshop-2/prompts/08-generation.md`, `09-verification.md`, `demo/08-review.md` | зроблено |
 | `step-08` (дод.) ✅ | слабкий тест + мутація одним `sed` (перевірено: слабкий зелений, 3 сильні червоні) — у `09-verification.md` | зроблено |
-| `step-10-review`, `step-10` ✅ | гілка `ai/us-06-approve`: PR (5 тестів зелені) → коміт з 6 тестами, що доводять знахідки (4 червоні) → виправлення (11/11, гонка 5/5) → merge у main = `step-10`. Рев'ю трьома рев'юерами — `demo/10-review-results.md`, сценарій — `prompts/10-review.md` | зроблено; **лишилось:** запушити гілку, відкрити PR у форку, прогнати `/gemini review` |
+| `step-10-review`, `step-10` ✅ | гілка `ai/us-06-approve`: PR (5 тестів зелені) → коміт з 6 тестами, що доводять знахідки (4 червоні) → виправлення (11/11, гонка 5/5) → merge у main = `step-10`. Рев'ю трьома рев'юерами — `demo/10-review-results.md`, сценарій — `prompts/10-review.md` | зроблено; **лишилось:** запушити гілку, відкрити PR у форку, запросити Copilot review (до воркшопу — зберегти скріншот/текст як запасний) |
 | `step-11` | US-02..04 з навмисним дублюванням перевірок | реалізувати по одній історії без рефакторингу |
 | `step-11-done` | після рефакторингу (запасний) | |
 | `workshop-2/RUNBOOK.md`, `SCRIPT.uk.md`, `PROMPTS.md`, `pairs.md`, `CARD.uk.md` | як у воркшопі 1 | після погодження плану |
@@ -229,7 +230,8 @@ Copilot (для тих, у кого є) — ті самі рівні: Tab/NES, C
 **Перевірити напередодні (поведінка інструментів змінюється швидко):**
 - Gemini CLI: `context.fileName` з `AGENTS.md` працює, `/memory show` показує root + `apps/*` файли, `.gemini/commands/*.toml` з'являються як `/implement-story`;
 - Gemini Code Assist у VS Code (agent mode) бачить ті самі контекст-файли, що й CLI;
-- Gemini Code Assist GitHub app коментує PR у форку (`/gemini review`);
+- Copilot code review доступний на акаунті ведучого (Pro / Student — на Free немає) і в коментарях посилається на правила з `AGENTS.md`;
+- чи входить code review у план Copilot Student (для студентів, у кого він є) — перевірити на студентському акаунті;
 - Claude з `@AGENTS.md` в `CLAUDE.md` і вкладеними `apps/*/AGENTS.md` не отримує правила двічі;
 - скільки дефектів з трьох реально знаходить кожен рев'юер (2–3 прогони);
 - `pnpm test` зелений на кожному тезі.
@@ -258,7 +260,7 @@ Copilot (для тих, у кого є) — ті самі рівні: Tab/NES, C
 ## Рішення (з відповідей)
 
 1. **Формат:** 80 хв онлайн.
-2. **Інструменти:** Claude Code і Gemini — основні; Copilot — як «те саме, інші файли».
+2. **Інструменти:** Claude Code і Gemini — основні; Copilot — як «те саме, інші файли» в IDE і як рев'юер на PR (показує ведучий).
 3. **Вживу / з тегів:** див. таблицю вище.
 4. **US-02..04 і US-06 реалізуються до воркшопу:** так. `main` після воркшопу = Auth + US-01..04.
 5. **Репо:** форк `github.com/Kenadar/dev-match-workshop`, рев'ю на справжньому PR там.

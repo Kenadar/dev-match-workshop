@@ -9,7 +9,8 @@
 - `.gemini/commands/implement-story.toml` injects `.claude/skills/implement-story/SKILL.md` — one procedure, two tools;
 - `/memory show` (Gemini) and `/memory` (Claude): check what the model actually loaded before blaming the model;
 - `./workshop/go.sh diff 6 7`, then the fixed `ApiError` line in `apps/api/AGENTS.md`: the old rule taught a constructor that doesn't exist;
-- what does *not* transfer: the edit-blocking hook is Claude-only. A guard-rail is not an instruction.
+- what does *not* transfer: the edit-blocking hook is Claude-only. A guard-rail is not an instruction;
+- the bonus: Copilot code review on GitHub PRs reads the same `AGENTS.md` (and `CLAUDE.md`) from the PR branch — step 10 uses it.
 
 ## Live demo — the same question twice
 
@@ -36,10 +37,8 @@ Teammates also use Gemini CLI / Gemini Code Assist and Copilot. Make one source 
 3. Add .gemini/settings.json so Gemini loads AGENTS.md.
 4. For every skill and agent, add a .gemini/commands/<name>.toml that injects the SKILL.md / agent file with @{...}
    instead of copying it, and maps $ARGUMENTS to {{args}}.
-5. Add .gemini/styleguide.md for PR review — the only place where duplication is allowed, because the PR bot reads
-   no other files; say so at the top of the file.
-6. While moving each rule, check it against the code it describes. List every rule that no longer matches the code.
+5. While moving each rule, check it against the code it describes. List every rule that no longer matches the code.
 Do not change any production code. Show the plan first.
 ```
 
-**What to pay attention to:** item 6. When we did this, the API rule described `ApiError(status, code, message)` and a `MESSAGES.roleFilled` constant; neither exists. Any assistant following that rule would have written code that does not compile.
+**What to pay attention to:** item 5. When we did this, the API rule described `ApiError(status, code, message)` and a `MESSAGES.roleFilled` constant; neither exists. Any assistant following that rule would have written code that does not compile.

@@ -1,8 +1,9 @@
 # Three reviewers on the same US-06 PR (real runs, 2026-11-04)
 
 Input: `git diff step-08 step-10-review`. Runs: the project `architecture-reviewer` twice (independent), and a
-generic reviewer that saw **only the diff** — no repo, no docs (stand-in for an out-of-the-box Copilot / Gemini PR review;
-re-run the real Gemini Code Assist on the fork's PR before the workshop and add its column).
+generic reviewer that saw **only the diff** — no repo, no docs (a context-free PR reviewer).
+Before the workshop: open the PR in the fork, request Copilot code review, and add its column. Copilot reads `AGENTS.md`
+from the PR branch, so expect it between the two: project rules, but not the ADRs and traceability unless it opens them.
 
 | Finding | Generic (diff only) | Project reviewer, run 1 | Project reviewer, run 2 | Proven by test |
 |---|---|---|---|---|

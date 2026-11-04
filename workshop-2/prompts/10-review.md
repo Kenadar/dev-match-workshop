@@ -28,8 +28,8 @@ And a fourth, quieter one: the test named "US-06 sc.3" seeds `availableSpots: 0`
 ## On stage (13 min)
 
 1. **Students first (3 min).** Link to the PR diff in chat (`git diff step-08 step-10-review`, or the PR in the fork). "Would you merge it? Tests are green." Collect findings in chat.
-2. **Generic reviewer (2 min).** Gemini Code Assist on the PR (`/gemini review`), or Copilot review. Show its list. Ask: which of these are real? How would you know?
-3. **Project reviewer (2 min).** Claude: the `architecture-reviewer` agent; Gemini: `/arch-review`. Same three findings, each with the ADR / document it breaks, and the false "Done" in traceability.
+2. **Copilot on the PR (2 min, presenter's account).** Reviewers → Copilot → Request (or `gh pr edit <N> --add-reviewer @copilot`). It reads `AGENTS.md` from the PR branch, so it is not a context-free reviewer. Show its list. Ask: which of these are real? How would you know? Optional before/after: repo Settings → Copilot → Code review → "Use custom instructions when reviewing pull requests" off, re-request, compare. Have a saved copy of its review in case it is slow.
+3. **Local project reviewer (2 min) — what every student can run, no subscription.** Claude: the `architecture-reviewer` agent; Gemini CLI: `/arch-review`. Same three findings, each with the ADR / document it breaks, and the false "Done" in traceability.
 4. **Prove, then fix (5 min).** `git switch --detach` to the "tests that prove the findings" commit → `pnpm --filter @devmatch/api test -- applications` → 4 red. Read the race test aloud (it is the `testing.md` example). Then the fix commit → green. Show the fixed service: the counts decide, nothing read earlier is written.
 5. **Lesson (1 min)** — below.
 
