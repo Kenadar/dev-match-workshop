@@ -28,6 +28,46 @@ export async function createUser(overrides: { email?: string; displayName?: stri
   return { id: res.body.user.id, email, password: DEFAULT_PASSWORD };
 }
 
+export async function createProject(overrides: { ownerId: string; status?: string; title?: string }) {
+  seq += 1;
+  return prisma.project.create({
+    data: {
+      ownerId: overrides.ownerId,
+      title: overrides.title ?? `Project ${seq}`,
+      description: 'A project description that is long enough for US-02.',
+      status: overrides.status ?? 'PUBLISHED',
+      publishedAt: (overrides.status ?? 'PUBLISHED') === 'DRAFT' ? null : new Date(),
+    },
+  });
+}
+
+export async function createRole(overrides: { projectId: string; name?: string; totalSpots?: number; availableSpots?: number }) {
+  seq += 1;
+  const totalSpots = overrides.totalSpots ?? 2;
+  const availableSpots = overrides.availableSpots ?? totalSpots;
+  return prisma.role.create({
+    data: {
+      projectId: overrides.projectId,
+      name: overrides.name ?? `Role ${seq}`,
+      totalSpots,
+      availableSpots,
+      status: availableSpots === 0 ? 'FILLED' : 'OPEN',
+    },
+  });
+}
+
+export async function createApplication(overrides: { roleId: string; applicantId: string; status?: string; telegram?: string }) {
+  return prisma.application.create({
+    data: {
+      roleId: overrides.roleId,
+      applicantId: overrides.applicantId,
+      telegram: overrides.telegram ?? '@student_dev',
+      githubUrl: 'https://github.com/student-dev',
+      status: overrides.status ?? 'PENDING',
+    },
+  });
+}
+
 /** A supertest agent that keeps the session cookie, signed in through POST /api/auth/login. */
 export async function signedIn(user: TestUser) {
   const agent = request.agent(createApp());
