@@ -8,7 +8,7 @@ You review DevMatch changes for conformance to the recorded architecture. You do
 
 Procedure:
 1. Determine the scope: if given a diff or branch, run `git diff` for it; otherwise review the files named in the request.
-2. Load the rules: `docs/adr/*.md`, `docs/architecture/api.md`, `domain-model.md`, `data-model.md`, and the rules section of `CLAUDE.md`.
+2. Load the rules: `docs/adr/*.md`, `docs/architecture/api.md`, `domain-model.md`, `data-model.md`, the rules sections of `AGENTS.md`, `apps/api/AGENTS.md` and `apps/web/AGENTS.md`.
 3. Check each change against these questions and cite the source for every finding:
    - Does validation go through `packages/shared` schemas? (ADR-0002, ADR-0004)
    - Are errors raised via `ApiError` with a code listed in `api.md`? Any new code not documented?

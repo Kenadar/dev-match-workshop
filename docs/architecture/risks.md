@@ -31,7 +31,7 @@ Review at every retrospective; do not delete a closed risk, mark it instead.
 
 | # | Risk | P/I | Trigger | Mitigation | Where it lives |
 |---|---|---|---|---|---|
-| C1 | Scope creep: post-MVP features (editable drafts, notifications, export) get pulled into the MVP | H/H | a PR without a US number in traceability | rule: every PR references a US-xx; post-MVP is a separate list in the story map; `/implement-story` refuses stories outside the list | CLAUDE.md, skills |
+| C1 | Scope creep: post-MVP features (editable drafts, notifications, export) get pulled into the MVP | H/H | a PR without a US number in traceability | rule: every PR references a US-xx; post-MVP is a separate list in the story map; `/implement-story` refuses stories outside the list | AGENTS.md, skills |
 | C2 | Frontend and backend diverge on the contract | M/M | the frontend mocks fields that do not exist in the API contract | the API contract (api.md) is the source of truth; a contract change = a document change in the same PR; shared DTO types | ADR-0002, ADR-0004 |
 | C3 | One team member knows Prisma/transactions, the rest do not | M/M | all PRs touching `services/applications` come from one person | `services/applications` is written in pairs; the race test is part of the DoD so that understanding is verified by a test | ADR-0007 |
 | C4 | AI generates code the team does not understand (especially auth and transactions) | H/H | at review the author cannot explain a line | review rule: the author explains every non-trivial block; `architecture-reviewer` checks compliance with the ADRs, a human checks understanding | `.claude/agents`, workshop 2 |
