@@ -1,0 +1,8 @@
+# Same procedure as Claude's /check-story: the skill file is the single source, injected below.
+description = "Verify that a DevMatch user story (US-01..US-14) is fully implemented - maps every acceptance criterion and Gherkin scenario to code and tests, and reports a covered / not-covered table. Use before marking a story done or when reviewing a PR that claims to implement a story."
+prompt = """
+Follow the procedure below. Wherever it says $ARGUMENTS, use: {{args}}
+Ignore the YAML frontmatter at the top; it is metadata for Claude Code.
+
+@{.claude/skills/check-story/SKILL.md}
+"""

@@ -1,0 +1,8 @@
+# Same procedure as Claude's /e2e-tests: the skill file is the single source, injected below.
+description = "Write a Playwright end-to-end spec for a DevMatch user journey that spans several user stories (e.g. lead creates and publishes a project, student applies, lead approves). Seeds data through the API, locates elements by role, follows the e2e rules in docs/architecture/testing.md. Use when asked for an e2e, browser, journey or Playwright test."
+prompt = """
+Follow the procedure below. Wherever it says $ARGUMENTS, use: {{args}}
+Ignore the YAML frontmatter at the top; it is metadata for Claude Code.
+
+@{.claude/skills/e2e-tests/SKILL.md}
+"""

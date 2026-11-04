@@ -2,7 +2,7 @@
 
 A service for assembling student teams: a project lead publishes a project with open roles, a student finds a project by stack and applies in one click.
 
-Requirements are in `docs/`, decisions in `docs/adr/`, architecture in `docs/architecture/`. Read `CLAUDE.md` before working with the code.
+Requirements are in `docs/`, decisions in `docs/adr/`, architecture in `docs/architecture/`. Read `AGENTS.md` before working with the code — it is the rule set for people and every AI assistant (Claude Code reads it via `CLAUDE.md`, Gemini via `.gemini/settings.json`).
 
 ## Running
 

@@ -1,0 +1,8 @@
+# Same procedure as Claude's /implement-story: the skill file is the single source, injected below.
+description = "Implement a DevMatch user story end to end (US-01..US-14) - reads the story, plans endpoint/page/schema/tests from its Gherkin scenarios, waits for approval, then implements and updates traceability. Use when asked to implement, build or start a user story by number."
+prompt = """
+Follow the procedure below. Wherever it says $ARGUMENTS, use: {{args}}
+Ignore the YAML frontmatter at the top; it is metadata for Claude Code.
+
+@{.claude/skills/implement-story/SKILL.md}
+"""

@@ -1,0 +1,11 @@
+# Same checklist as Claude's architecture-reviewer agent; the agent file is the single source.
+description = "Review the current branch (or the given ref range) against DevMatch ADRs and architecture docs. Read-only."
+prompt = """
+Act as the reviewer described below. Do not edit any file.
+Scope: {{args}} (if empty, review the changes of the current branch against main).
+
+@{.claude/agents/architecture-reviewer.md}
+
+The diff of the current branch against main, for convenience:
+!{git diff main...HEAD}
+"""

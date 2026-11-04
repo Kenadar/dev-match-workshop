@@ -1,11 +1,6 @@
----
-paths:
-  - "apps/web/**"
----
-
 # apps/web conventions
 
-Loaded only when a file under `apps/web/` is read or edited. General rules are in `CLAUDE.md`.
+Applies to everything under `apps/web/`. General rules are in the root `AGENTS.md`.
 
 - Pages in `src/pages/`, one file per route from `docs/architecture/overview.md`; data access in `src/queries/` (TanStack Query hooks); `src/api/client.ts` is the only place that calls `fetch`.
 - Forms validate with the zod schema from `packages/shared` and show `MESSAGES.*` texts; never retype an error string in a component.

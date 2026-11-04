@@ -1,0 +1,8 @@
+# Same procedure as Claude's /adr: the skill file is the single source, injected below.
+description = "Create a new Architecture Decision Record in docs/adr/ with the next number, using the project template, requiring at least two alternatives with trade-offs for this team. Use when a technology, structure, API-contract or infrastructure decision is being made or questioned."
+prompt = """
+Follow the procedure below. Wherever it says $ARGUMENTS, use: {{args}}
+Ignore the YAML frontmatter at the top; it is metadata for Claude Code.
+
+@{.claude/skills/adr/SKILL.md}
+"""

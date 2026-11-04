@@ -1,0 +1,8 @@
+# Same procedure as Claude's /unit-tests: the skill file is the single source, injected below.
+description = "Write unit and API (integration) tests for a DevMatch user story (US-01..US-14) or a module - one vitest test per Gherkin scenario and acceptance criterion, named \"US-xx sc.N ...\", using the shared test DB helpers and supertest. Use when asked to write, add or complete tests for a story, an endpoint, a service or a schema."
+prompt = """
+Follow the procedure below. Wherever it says $ARGUMENTS, use: {{args}}
+Ignore the YAML frontmatter at the top; it is metadata for Claude Code.
+
+@{.claude/skills/unit-tests/SKILL.md}
+"""

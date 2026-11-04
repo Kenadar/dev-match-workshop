@@ -27,7 +27,7 @@ Present a short plan and **wait for confirmation** before writing code:
 
 Order: shared schema/DTO → service → route → tests (api) → page/query (web) → manual check with `pnpm dev`.
 
-Rules (from CLAUDE.md): validation only through `packages/shared`; errors only through `ApiError` with codes from api.md; no business logic in routes or components; DTOs via serializers.
+Rules (from AGENTS.md): validation only through `packages/shared`; errors only through `ApiError` with codes from api.md; no business logic in routes or components; DTOs via serializers.
 
 ## 4. Close
 
