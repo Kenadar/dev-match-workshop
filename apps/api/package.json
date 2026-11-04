@@ -14,17 +14,20 @@
   "dependencies": {
     "@devmatch/shared": "workspace:*",
     "@prisma/client": "^6.6.0",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "express": "^5.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.0",
+    "@types/supertest": "^6.0.3",
     "prisma": "^6.6.0",
+    "supertest": "^7.1.0",
     "tsx": "^4.19.3",
     "typescript": "^5.6.3",
-    "vitest": "^3.1.1",
-    "supertest": "^7.1.0",
-    "@types/supertest": "^6.0.3"
+    "vitest": "^3.1.1"
   }
 }

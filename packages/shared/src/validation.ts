@@ -63,13 +63,13 @@ const tagSchema = z.string().trim().min(1).max(30);
 // --- Request bodies ------------------------------------------------------------------------
 
 export const registerSchema = z.object({
-  email: z.string().trim().email('Enter a valid email'),
+  email: z.string().trim().toLowerCase().email('Enter a valid email'), // emails are case-insensitive (one account per address)
   password: z.string().min(8, 'Password must be at least 8 characters').max(72),
   displayName: z.string().trim().min(2, 'Enter your name (2–50 characters)').max(50),
 });
 
 export const loginSchema = z.object({
-  email: z.string().trim().email('Enter a valid email'),
+  email: z.string().trim().toLowerCase().email('Enter a valid email'), // emails are case-insensitive (one account per address)
   password: z.string().min(1, 'Enter your password'),
 });
 

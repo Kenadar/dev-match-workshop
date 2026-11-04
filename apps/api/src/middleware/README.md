@@ -1,4 +1,4 @@
 # middleware/
 
 - `validate.ts` — body validation (exists)
-- `auth.ts` — TODO: `requireAuth` (401 UNAUTHENTICATED), `requireProjectOwner` (403 FORBIDDEN / 404 NOT_FOUND)
+- `auth.ts` — `loadUser` (session cookie → `req.user`), `requireAuth` (401 UNAUTHENTICATED); owner checks stay in services (`apps/api/AGENTS.md`)

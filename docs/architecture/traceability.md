@@ -4,7 +4,7 @@ User story → endpoint → page → entities → key tests. This is both the im
 
 | US | Name | Endpoint(s) | Page | Entities | Key tests (from Gherkin) |
 |---|---|---|---|---|---|
-| US-01 | Telegram on first sign-in | `PATCH /me` | `/onboarding` | User | sc.1 normalization `orest_lead` → `@orest_lead`; sc.2 empty → VALIDATION_ERROR; sc.3 `orest lead!` and `abc` → VALIDATION_ERROR |
+| US-01 | Telegram on first sign-in | `PATCH /me` | `/onboarding` | User | sc.1 normalization `orest_lead` → `@orest_lead`; sc.2 empty → VALIDATION_ERROR; sc.3 `orest lead!` and `abc` → VALIDATION_ERROR. **Done:** `apps/api/tests/me.test.ts` (sc.1–3, AC 2 normalization, AC 3 bound to account, 401), `apps/web/src/__tests__/onboarding.test.tsx` (sc.1–3 on the page) |
 | US-02 | Creating a project card | `POST /projects` | `/my/projects/new` | Project, ProjectTag | sc.1 → 201, status DRAFT, owner = current user; sc.2 description < 30 → 400 on the `description` field; without telegram → 400 PROFILE_INCOMPLETE |
 | US-03 | Adding a role | `POST /projects/:id/roles` | `/my/projects/:id` (Roles) | Role | sc.1 → availableSpots == totalSpots; sc.2 0, -2, 1.5 → 400; sc.3 duplicate (including different casing) → 409 DUPLICATE_ROLE; not the owner → 403; CLOSED → 409 INVALID_STATUS |
 | US-04 | Publishing | `POST /projects/:id/publish` | `/my/projects/:id` | Project | sc.1 → PUBLISHED, publishedAt set, appears in `GET /projects`; sc.2 without roles → 400 NO_ROLES; re-publishing → 409 INVALID_STATUS |
@@ -18,7 +18,18 @@ User story → endpoint → page → entities → key tests. This is both the im
 | US-12 | Submitting an application | `POST /roles/:roleId/applications` | `/projects/:id` | Application | sc.1 → 201 PENDING; sc.2 gitlab.com / `my-repo` → 400 on the `githubUrl` field; sc.3 duplicate → 409 DUPLICATE_APPLICATION; sc.4 role FILLED → 409 ROLE_FILLED; after REJECTED re-applying is allowed |
 | US-13 | My applications | `GET /me/applications` | `/my/applications` | Application | sc.1 two statuses, badges; order createdAt DESC; sc.2 empty → empty state with a link to `/` |
 | US-14 | Lead's contact | `GET /me/applications` | `/my/applications` | Application, User | sc.1 APPROVED → `leadTelegram: "@orest_lead"`, link `https://t.me/orest_lead`; sc.2 PENDING/REJECTED → **the field is absent from the JSON** |
-| — | Auth (ADR-0006) | `POST /auth/register`, `/login`, `/logout`, `GET /me` | `/login`, `/register` | User, Session | duplicate email → 409; wrong password → 401; `GET /me` without a cookie → 401; `passwordHash` absent from the response |
+| — | Auth (ADR-0006) | `POST /auth/register`, `/login`, `/logout`, `GET /me` | `/login`, `/register` | User, Session | duplicate email → 409; wrong password → 401; `GET /me` without a cookie → 401; `passwordHash` absent from the response. **Done:** `apps/api/tests/auth.test.ts` (register, duplicate, login, wrong password, unknown email, `/me` with/without/expired session, logout) |
+
+## Assumptions made while implementing
+
+| Story | Assumption | Why |
+|---|---|---|
+| Auth | Emails are case-insensitive: `registerSchema` / `loginSchema` lower-case them | one account per address; `Orest@x` and `orest@x` must not be two users |
+| Auth | Logout deletes only the current session; other sessions of the user stay | "sign out" on one device should not sign out the others; no story says otherwise |
+| Auth | Unknown email and wrong password return the same 401 `INVALID_CREDENTIALS` and take the same time | do not reveal which emails are registered |
+| Auth | `bcryptjs` (pure JS, cost 10) instead of native `bcrypt` | same algorithm and cost as risks.md T8, no native build on students' machines |
+| US-01 | "First sign-in" = any sign-in or registration while `telegram` is empty → `/onboarding` | the story does not define "first"; an empty contact is the observable condition |
+| US-01 sc.1 | "Project management panel" = `/my/projects` | the only page matching that description in overview.md |
 
 ## Implementation order (recommended)
 
