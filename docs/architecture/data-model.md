@@ -10,7 +10,7 @@ DBMS: SQLite via Prisma (ADR-0005). Statuses are `String` (Prisma does not suppo
 | Field | Type | Constraints |
 |---|---|---|
 | `id` | String (cuid) | PK |
-| `email` | String | UNIQUE |
+| `email` | String | UNIQUE; stored lower-case (normalized by `registerSchema` / `loginSchema`), so uniqueness is case-insensitive |
 | `passwordHash` | String | |
 | `displayName` | String | |
 | `telegram` | String? | normalized `@name` |

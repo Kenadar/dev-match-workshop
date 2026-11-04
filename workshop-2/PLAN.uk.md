@@ -219,8 +219,8 @@ Copilot (для тих, у кого є) — ті самі рівні: Tab/NES, C
 | `workshop-2/antipattern/` | заготовлена відповідь вебчату на US-01 з розміткою порушень | один прогін у вебчаті, зберегти як є |
 | — ✅ | remote `origin` → форк `Kenadar/dev-match-workshop`, старий — `upstream`; теги `step-00…06` поставлено на наявні коміти (тегів не було ні в одному репо) | зроблено |
 | `step-07` ✅ | `AGENTS.md`, `CLAUDE.md` з імпортом, `apps/*/AGENTS.md` + `CLAUDE.md`, `.gemini/settings.json`, `.gemini/commands/*.toml`, `.gemini/styleguide.md` | зроблено |
-| `step-08` | Auth + US-01 з тестами, traceability | `/implement-story` наживо напередодні, зберегти |
-| `step-08` (дод.) | слабкий тест для кроку 9 як окремий коміт або файл-приклад | вручну |
+| `step-08` ✅ | Auth + US-01, 50 тестів, traceability з таблицею припущень, api.md/data-model оновлені після рев'ю; `workshop-2/prompts/08-generation.md`, `09-verification.md`, `demo/08-review.md` | зроблено |
+| `step-08` (дод.) ✅ | слабкий тест + мутація одним `sed` (перевірено: слабкий зелений, 3 сильні червоні) — у `09-verification.md` | зроблено |
 | `step-10-review` | US-06 «AI-PR» з трьома дефектами + відкритий PR у форку; на форк встановлено Gemini Code Assist GitHub app | згенерувати, потім вручну закласти дефекти |
 | `step-11` | US-02..04 з навмисним дублюванням перевірок | реалізувати по одній історії без рефакторингу |
 | `step-11-done` | після рефакторингу (запасний) | |

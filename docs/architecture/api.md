@@ -2,7 +2,7 @@
 
 **Audience:** frontend and backend developers. This is the agreement that lets us work in parallel. When it diverges from the code, this document is the source of truth; if you change the contract, change the document first.
 
-Base path: `/api`. Format: JSON. Authentication: cookie session (ADR-0006). All request bodies are validated with zod schemas from `packages/shared` (ADR-0004).
+Base path: `/api`. Format: JSON. Authentication: cookie session (ADR-0006); emails are case-insensitive — register and login lower-case them, so `user.email` is always lower-case. All request bodies are validated with zod schemas from `packages/shared` (ADR-0004).
 
 ## Endpoints
 
@@ -10,9 +10,9 @@ Base path: `/api`. Format: JSON. Authentication: cookie session (ADR-0006). All 
 |---|---|---|---|---|
 | `POST /auth/register` | ADR-0006 | public | 201 `{ user }` | 400 VALIDATION_ERROR, 409 EMAIL_TAKEN |
 | `POST /auth/login` | ADR-0006 | public | 200 `{ user }` | 400 VALIDATION_ERROR, 401 INVALID_CREDENTIALS |
-| `POST /auth/logout` | ADR-0006 | auth | 204 | |
-| `GET /me` | ADR-0006 | auth | 200 `{ user }` | 401 |
-| `PATCH /me` | US-01 | auth | 200 `{ user }` | 400 VALIDATION_ERROR |
+| `POST /auth/logout` | ADR-0006 | auth | 204 (ends only the current session) | 401 UNAUTHENTICATED |
+| `GET /me` | ADR-0006 | auth | 200 `{ user }` | 401 UNAUTHENTICATED |
+| `PATCH /me` | US-01 | auth | 200 `{ user }` | 400 VALIDATION_ERROR, 401 UNAUTHENTICATED |
 | `GET /projects?tag=` | US-09, US-10 | public | 200 `{ items: ProjectCard[] }` | 400 VALIDATION_ERROR (tag > 50) |
 | `GET /projects/:id` | US-11 | public (DRAFT — owner only) | 200 `{ project }` | 404 NOT_FOUND |
 | `POST /projects` | US-02 | auth | 201 `{ project }` (status DRAFT) | 400 VALIDATION_ERROR, 400 PROFILE_INCOMPLETE |

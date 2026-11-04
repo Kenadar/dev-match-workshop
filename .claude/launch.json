@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "devmatch",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "DATABASE_URL=file:./dev.db PORT=3000 pnpm dev"],
+      "port": 5173
+    }
+  ]
+}
