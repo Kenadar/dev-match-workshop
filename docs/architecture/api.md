@@ -53,9 +53,9 @@ Access rule: **every** owner/status check is performed on the server independent
 | 400 | `PROJECT_CLOSED` | "Recruitment for this project is closed. Applications are not accepted" | US-08 sc.2 |
 | 401 | `UNAUTHENTICATED` | "Sign in to continue" | ADR-0006 |
 | 401 | `INVALID_CREDENTIALS` | "Invalid email or password" | ADR-0006 |
-| 403 | `FORBIDDEN` | "403 Forbidden. You are not allowed to view applications for this project" | US-05 sc.3 |
+| 403 | `FORBIDDEN` | "403 Forbidden. You are not allowed to view applications for this project" / "You are not allowed to manage applications for this project" | US-05 sc.3 / US-06, US-07 (not the owner) |
 | 403 | `OWN_PROJECT` | "You cannot apply to your own project" | overview, question 1 |
-| 404 | `NOT_FOUND` | "Project not found or it has been deleted" | US-11 sc.2 |
+| 404 | `NOT_FOUND` | "Project not found or it has been deleted" / "Application not found" | US-11 sc.2 / US-06, US-07 |
 | 409 | `EMAIL_TAKEN` | "A user with this email already exists" | ADR-0006 |
 | 409 | `DUPLICATE_ROLE` | "This role already exists in the project. Change the number of spots on the existing one" | US-03 sc.3 |
 | 409 | `INVALID_STATUS` | "This action is not available in the project's current status" | US-03 AC, US-04, US-08 AC |

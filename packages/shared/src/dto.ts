@@ -52,6 +52,13 @@ export interface ApplicationForOwnerDto {
   applicantTelegram?: string;
 }
 
+/** POST /applications/:id/approve (US-06): the decision, the candidate's Telegram, the new role counter. */
+export interface ApproveApplicationResponseDto {
+  application: { id: string; status: ApplicationStatus; decidedAt: string | null };
+  applicantTelegram: string;
+  role: { id: string; availableSpots: number; status: RoleStatus };
+}
+
 /** Student's view (US-13, US-14). leadTelegram is absent unless APPROVED. */
 export interface MyApplicationDto {
   id: string;
