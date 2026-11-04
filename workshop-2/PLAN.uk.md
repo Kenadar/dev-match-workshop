@@ -149,7 +149,7 @@ Copilot (для тих, у кого є) — ті самі рівні: Tab/NES, C
 
 🖥 Порядок:
 1. Студенти 2 хв дивляться дифф самі (посилання в чат) — хто що знайшов, у чат.
-2. Copilot code review на PR у форку (ведучий: Reviewers → Copilot → Request). Він читає `AGENTS.md` з гілки PR — тобто це вже не «загальний» рев'юер. Опційно до/після: Settings → Copilot → Code review → «Use custom instructions when reviewing pull requests» вимкнути / увімкнути.
+2. Copilot code review на [PR #1](https://github.com/Kenadar/dev-match-workshop/pull/1) у форку (рев'ю вже є; запасна копія — `demo/10-copilot-review.md`). Він читає `AGENTS.md` з гілки PR — тобто це вже не «загальний» рев'юер: знайшов усі три дефекти, назвав ADR-0007, а через скіл `check-story` — ще й фейковий тест гонки та неперевірений REJECTED. В API (`/pulls/1/comments`, поле `copilot_code_review_sources`) видно, що тестові знахідки взялися з `AGENTS.md` + `check-story` — це крок 7 в дії. Але пріоритетів по знахідках він не ставить. Опційно до/після: Settings → Copilot → Code review → «Use custom instructions when reviewing pull requests» вимкнути / увімкнути.
 3. Агент `architecture-reviewer` (Gemini: `/arch-review`) — ті самі три, але кожен з посиланням на ADR/документ і з правильним пріоритетом; плюс «traceability каже Done, а тесту на гонку немає». 🎤 **Чесно:** на цьому PR загальний рев'юер теж знайшов усі три — але витік паролів назвав «medium, може розкрити». Різниця не в *що*, а в *наскільки серйозно і чому* — і в тому, що бачить лише той, хто читав ваші документи. Повна таблиця: `workshop-2/demo/10-review-results.md`.
 4. Для кожного дефекту — **не вірити рев'юеру на слово**: коміт «tests that prove the findings» → 4 з 11 червоні (гонка: два `APPROVED`, лічильник 0). Потім коміт з виправленням → 11/11 зелені.
 
@@ -222,7 +222,7 @@ Copilot (для тих, у кого є) — ті самі рівні: Tab/NES, C
 | `step-07` ✅ | `AGENTS.md`, `CLAUDE.md` з імпортом, `apps/*/AGENTS.md` + `CLAUDE.md`, `.gemini/settings.json`, `.gemini/commands/*.toml` (+ `.gemini/styleguide.md`, прибраний у `step-10`) | зроблено |
 | `step-08` ✅ | Auth + US-01, 50 тестів, traceability з таблицею припущень, api.md/data-model оновлені після рев'ю; `workshop-2/prompts/08-generation.md`, `09-verification.md`, `demo/08-review.md` | зроблено |
 | `step-08` (дод.) ✅ | слабкий тест + мутація одним `sed` (перевірено: слабкий зелений, 3 сильні червоні) — у `09-verification.md` | зроблено |
-| `step-10-review`, `step-10` ✅ | гілка `ai/us-06-approve`: PR (5 тестів зелені) → коміт з 6 тестами, що доводять знахідки (4 червоні) → виправлення (11/11, гонка 5/5) → merge у main = `step-10`. Рев'ю трьома рев'юерами — `demo/10-review-results.md`, сценарій — `prompts/10-review.md` | зроблено; **лишилось:** запушити гілку, відкрити PR у форку, запросити Copilot review (до воркшопу — зберегти скріншот/текст як запасний) |
+| `step-10-review`, `step-10` ✅ | гілка `ai/us-06-approve`: PR (5 тестів зелені) → коміт з 6 тестами, що доводять знахідки (4 червоні) → виправлення (11/11, гонка 5/5) → merge у main = `step-10`. Рев'ю чотирма рев'юерами (з Copilot) — `demo/10-review-results.md`, сценарій — `prompts/10-review.md` | зроблено; гілки й теги у форку, [PR #1](https://github.com/Kenadar/dev-match-workshop/pull/1) з рев'ю Copilot, запасна копія — `demo/10-copilot-review.md` |
 | `step-11` | US-02..04 з навмисним дублюванням перевірок | реалізувати по одній історії без рефакторингу |
 | `step-11-done` | після рефакторингу (запасний) | |
 | `workshop-2/RUNBOOK.md`, `SCRIPT.uk.md`, `PROMPTS.md`, `pairs.md`, `CARD.uk.md` | як у воркшопі 1 | після погодження плану |
@@ -230,7 +230,7 @@ Copilot (для тих, у кого є) — ті самі рівні: Tab/NES, C
 **Перевірити напередодні (поведінка інструментів змінюється швидко):**
 - Gemini CLI: `context.fileName` з `AGENTS.md` працює, `/memory show` показує root + `apps/*` файли, `.gemini/commands/*.toml` з'являються як `/implement-story`;
 - Gemini Code Assist у VS Code (agent mode) бачить ті самі контекст-файли, що й CLI;
-- Copilot code review доступний на акаунті ведучого (Pro / Student — на Free немає) і в коментарях посилається на правила з `AGENTS.md`;
+- ✅ Copilot code review доступний на акаунті ведучого і використовує `AGENTS.md` + скіл `check-story` (перевірено на PR #1, 2026-11-04);
 - чи входить code review у план Copilot Student (для студентів, у кого він є) — перевірити на студентському акаунті;
 - Claude з `@AGENTS.md` в `CLAUDE.md` і вкладеними `apps/*/AGENTS.md` не отримує правила двічі;
 - скільки дефектів з трьох реально знаходить кожен рев'юер (2–3 прогони);

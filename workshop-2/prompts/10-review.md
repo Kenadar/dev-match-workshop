@@ -11,7 +11,8 @@
 | next commit `US-06 review: tests that prove the findings (red)` | 6 new tests; 4 of 11 fail on the PR code |
 | next commit `US-06 review: fix …` | the fix; 11/11 green (race test passed 5 runs of 5) |
 | `step-10` | merge into main |
-| `workshop-2/demo/10-review-results.md` | what three reviewers found, side by side |
+| `workshop-2/demo/10-review-results.md` | what four reviewers found, side by side (incl. Copilot) |
+| `workshop-2/demo/10-copilot-review.md` | saved copy of Copilot's review on PR #1 |
 
 Branch `ai/us-06-approve` = the PR. To open it: `git switch --detach step-10-review` (`go.sh` takes numeric steps only).
 
@@ -28,12 +29,12 @@ And a fourth, quieter one: the test named "US-06 sc.3" seeds `availableSpots: 0`
 ## On stage (13 min)
 
 1. **Students first (3 min).** Link to the PR diff in chat (`git diff step-08 step-10-review`, or the PR in the fork). "Would you merge it? Tests are green." Collect findings in chat.
-2. **Copilot on the PR (2 min, presenter's account).** Reviewers → Copilot → Request (or `gh pr edit <N> --add-reviewer @copilot`). It reads `AGENTS.md` from the PR branch, so it is not a context-free reviewer. Show its list. Ask: which of these are real? How would you know? Optional before/after: repo Settings → Copilot → Code review → "Use custom instructions when reviewing pull requests" off, re-request, compare. Have a saved copy of its review in case it is slow.
+2. **Copilot on the PR (2 min, presenter's account).** [PR #1](https://github.com/Kenadar/dev-match-workshop/pull/1) already has its review; re-request live (Reviewers → Copilot) only if time allows, the saved copy is `workshop-2/demo/10-copilot-review.md`. It reads `AGENTS.md` from the PR branch, so it is not a context-free reviewer: it found all three defects, named ADR-0007, and — through the repo's `check-story` skill — caught the fake race test and the untested REJECTED case. Show one thing from the API: `https://api.github.com/repos/Kenadar/dev-match-workshop/pulls/1/comments`, field `copilot_code_review_sources` — the test findings list `AGENTS.md` + `check-story`. That is step 7 paying off. Ask: which of these are real? How would you know? It gives no severity per finding — who decides what blocks the merge? Optional before/after: repo Settings → Copilot → Code review → "Use custom instructions when reviewing pull requests" off, re-request, compare.
 3. **Local project reviewer (2 min) — what every student can run, no subscription.** Claude: the `architecture-reviewer` agent; Gemini CLI: `/arch-review`. Same three findings, each with the ADR / document it breaks, and the false "Done" in traceability.
 4. **Prove, then fix (5 min).** `git switch --detach` to the "tests that prove the findings" commit → `pnpm --filter @devmatch/api test -- applications` → 4 red. Read the race test aloud (it is the `testing.md` example). Then the fix commit → green. Show the fixed service: the counts decide, nothing read earlier is written.
 5. **Lesson (1 min)** — below.
 
-🎤 "Three reviewers found the same three defects. That was not the hard part. The hard part is: which finding is real, how bad, and how do we keep it fixed. The generic reviewer said the password leak 'can expose' sensitive data — medium. The project reviewer said 'CLAUDE.md: passwordHash never leaves the server' — critical. And neither of them is proof. Proof is the red test."
+🎤 "Every reviewer found the same three defects. That was not the hard part. The hard part is: which finding is real, how bad, and how do we keep it fixed. The generic reviewer said the password leak 'can expose' sensitive data — medium. Copilot found it but did not rank it. The project reviewer said 'passwordHash never leaves the server' — critical. And none of them is proof. Proof is the red test."
 
 ## Prompt to fix — the order matters
 
