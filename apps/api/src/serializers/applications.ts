@@ -1,13 +1,15 @@
-import type { approveApplication } from '../services/applications.js';
+import type { Application, Role } from '@prisma/client';
+import type { ApplicationStatus, ApproveApplicationResponseDto, RoleStatus } from '@devmatch/shared';
 
-type Approved = Awaited<ReturnType<typeof approveApplication>>;
-
-/** POST /applications/:id/approve response (api.md example): the application, the candidate's Telegram, the new counter. */
-export function toApprovedDto({ application, role }: Approved) {
-  const { role: _role, ...rest } = application;
+/** POST /applications/:id/approve (api.md example): field by field, never a spread Prisma object. */
+export function toApprovedDto({ application, role }: { application: Application; role: Role }): ApproveApplicationResponseDto {
   return {
-    application: rest,
-    applicantTelegram: application.telegram, // US-06 AC: revealed to the lead after approval
-    role: { id: role.id, availableSpots: role.availableSpots, status: role.status },
+    application: {
+      id: application.id,
+      status: application.status as ApplicationStatus,
+      decidedAt: application.decidedAt?.toISOString() ?? null,
+    },
+    applicantTelegram: application.telegram, // US-06 AC 4: revealed to the owner once approved
+    role: { id: role.id, availableSpots: role.availableSpots, status: role.status as RoleStatus },
   };
 }
