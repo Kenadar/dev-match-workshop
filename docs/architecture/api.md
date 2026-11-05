@@ -15,7 +15,7 @@ Base path: `/api`. Format: JSON. Authentication: cookie session (ADR-0006); emai
 | `PATCH /me` | US-01 | auth | 200 `{ user }` | 400 VALIDATION_ERROR, 401 UNAUTHENTICATED |
 | `GET /projects?tag=` | US-09, US-10 | public | 200 `{ items: ProjectCard[] }` | 400 VALIDATION_ERROR (tag > 50) |
 | `GET /projects/:id` | US-11 | public (DRAFT — owner only) | 200 `{ project }` | 404 NOT_FOUND |
-| `POST /projects` | US-02 | auth | 201 `{ project }` (status DRAFT) | 400 VALIDATION_ERROR, 400 PROFILE_INCOMPLETE |
+| `POST /projects` | US-02 | auth | 201 `{ project }` (status DRAFT) | 400 VALIDATION_ERROR, 400 PROFILE_INCOMPLETE (no Telegram), 401 |
 | `GET /me/projects` | navigation | auth | 200 `{ items: ProjectCard[] }` | 401 |
 | `POST /projects/:id/roles` | US-03 | owner | 201 `{ role }` | 400 VALIDATION_ERROR, 403 FORBIDDEN, 404, 409 DUPLICATE_ROLE, 409 INVALID_STATUS (CLOSED) |
 | `POST /projects/:id/publish` | US-04 | owner | 200 `{ project }` | 403, 404, 400 NO_ROLES, 409 INVALID_STATUS (not DRAFT) |
@@ -53,7 +53,7 @@ Access rule: **every** owner/status check is performed on the server independent
 | 400 | `PROJECT_CLOSED` | "Recruitment for this project is closed. Applications are not accepted" | US-08 sc.2 |
 | 401 | `UNAUTHENTICATED` | "Sign in to continue" | ADR-0006 |
 | 401 | `INVALID_CREDENTIALS` | "Invalid email or password" | ADR-0006 |
-| 403 | `FORBIDDEN` | "403 Forbidden. You are not allowed to view applications for this project" / "You are not allowed to manage applications for this project" | US-05 sc.3 / US-06, US-07 (not the owner) |
+| 403 | `FORBIDDEN` | "403 Forbidden. You are not allowed to view applications for this project" / "You are not allowed to manage applications for this project" / "You are not allowed to manage this project" | US-05 sc.3 / US-06, US-07 (not the owner) / US-03, US-04, US-08 (not the owner) |
 | 403 | `OWN_PROJECT` | "You cannot apply to your own project" | overview, question 1 |
 | 404 | `NOT_FOUND` | "Project not found or it has been deleted" / "Application not found" | US-11 sc.2 / US-06, US-07 |
 | 409 | `EMAIL_TAKEN` | "A user with this email already exists" | ADR-0006 |
