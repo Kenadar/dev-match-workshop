@@ -18,7 +18,7 @@
 
 ## Live, in this order (8 min)
 
-1. **Machine:** `pnpm typecheck && pnpm test` → then `/check-story US-01` (Claude or Gemini). The table maps AC 3 ("shown in project cards to approved members") to US-14 — already noted in traceability.
+1. **Machine:** `pnpm typecheck && pnpm test` → then `/check-story US-01` (Claude or Antigravity). The table maps AC 3 ("shown in project cards to approved members") to US-14 — already noted in traceability.
 2. **Eyes — the diff in the IDE**, not in the chat: `git diff step-07 step-08 --stat`, then the Source Control view. 60-second checklist:
    - new files outside the expected folders?
    - **changed tests** — did the agent "fix" a test instead of the code?

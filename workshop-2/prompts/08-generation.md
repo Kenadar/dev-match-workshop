@@ -10,7 +10,7 @@
   `services/auth.ts` (rules) · `routes/auth.ts` (HTTP only, four lines per handler) · `serializers/user.ts` (the only shape a user leaves the server in);
 - the tool ladder at the bottom: Tab for the `it.each` table of invalid usernames, the agent for the slice.
 
-## Prompt (Claude Code or Gemini CLI — same command)
+## Prompt (Claude Code or Antigravity — same command)
 
 ```text
 /implement-story US-01
@@ -43,6 +43,6 @@ In `apps/api/tests/me.test.ts`, start typing a table above the sc.3 test:
 it.each(['orest lead!', 'abc'])(
 ```
 
-Gemini Code Assist / Copilot completes the body from the sc.1 test above it. Point out what it gets wrong (usually: it asserts only the status code) — that is the bridge to step 9.
+Antigravity Tab / Copilot completes the body from the sc.1 test above it. Point out what it gets wrong (usually: it asserts only the status code) — that is the bridge to step 9.
 
 **What to pay attention to:** the assumptions table in traceability.md. Six decisions were made that no story states — "first sign-in", where "the project panel" is, case of emails, what logout ends. The agent will make these silently unless the procedure forces it to write them down. `/implement-story` does; that is why it exists.

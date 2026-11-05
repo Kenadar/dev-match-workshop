@@ -33,8 +33,8 @@
    ⌨️ `pnpm install`
    ⌨️ `pnpm db:migrate` (потрібен `apps/api/.env`, див. `.env.example`; заодно генерує Prisma-клієнт)
    ⌨️ `pnpm typecheck && pnpm test` → усе зелене.
-4. **Gemini CLI:** ⌨️ `./workshop/go.sh 7`, потім ⌨️ `gemini` → `/memory show` має показати `AGENTS.md` (корінь і `apps/*`), а `/` — команди `/implement-story`, `/arch-review`. Вийти `/quit`.
-5. **Пробний прогін кроку 7 «до/після»** у Gemini (питання нижче). Відповіді зберегти в `workshop-2/demo/07-before.md` і `07-after.md` — запаска, якщо мережа ляже.
+4. **Antigravity:** ⌨️ `./workshop/go.sh 7`, потім ⌨️ `agy` → `/context` має показати `AGENTS.md` у Rules, `/skills` — `implement-story`, `arch-review` та інші. Відкрити будь-який файл у `apps/api` і перевірити, що правило `api` теж підтягнулось (glob). Вийти. Gemini CLI не використовуємо: його вимкнули для звичайних акаунтів 18.06.2026.
+5. **Пробний прогін кроку 7 «до/після»** в Antigravity (питання нижче), з безкоштовного акаунта — заодно перевірити, що тижневої квоти вистачає. Відповіді зберегти в `workshop-2/demo/07-before.md` і `07-after.md` — запаска, якщо мережа ляже.
 6. **Вкладки браузера** (у такому порядку):
    1. `workshop-2/antipattern/webchat-answer.md` (можна з GitHub — читається краще);
    2. https://github.com/Kenadar/dev-match-workshop/pull/1/files
@@ -42,7 +42,7 @@
    4. https://api.github.com/repos/Kenadar/dev-match-workshop/pulls/1/comments
    5. `workshop-2/demo/10-review-results.md`
 7. **Студентам за день** — повідомлення для пар (текст у блоці «Практика в парах»): клонувати форк і зробити `pnpm install` заздалегідь. 10 хвилин на встановлення в парах немає.
-8. **Термінал:** великий шрифт, корінь демо-копії. IDE (VS Code з Gemini Code Assist) відкрита в тій самій папці.
+8. **Термінал:** великий шрифт, корінь демо-копії. IDE (Antigravity або VS Code) відкрита в тій самій папці.
 
 ## Перед стартом (5 хв до початку)
 
@@ -96,15 +96,16 @@
 ### Три шари контексту (2 хв)
 
 🎤
-Асистент у IDE бачить те, що ви йому налаштували. Шарів три. Перший — **завжди в контексті**: стек, команди, правила з ADR. Другий — **за папкою**: правила для `apps/api` інші, ніж для `apps/web`. Третій — **на вимогу**: процедури на кшталт «реалізуй історію». У Claude кожен шар має свій файл — це зробив попередній лектор. Але у вас різні інструменти: Claude, Gemini, у когось Copilot. Питання: як зробити, щоб правила команди бачили всі?
+Асистент у IDE бачить те, що ви йому налаштували. Шарів три. Перший — **завжди в контексті**: стек, команди, правила з ADR. Другий — **за папкою**: правила для `apps/api` інші, ніж для `apps/web`. Третій — **на вимогу**: процедури на кшталт «реалізуй історію». У Claude кожен шар має свій файл — це зробив попередній лектор. Але у вас різні інструменти: Claude, Antigravity, у когось Copilot. Питання: як зробити, щоб правила команди бачили всі?
 
-🖥 `PLAN.uk.md`, таблиця «Шар / Claude / Gemini / Copilot» (крок 7). 20 секунд.
+🖥 `PLAN.uk.md`, таблиця «Шар / Claude / Antigravity / Copilot» (крок 7). 20 секунд.
 
 ### Демо «до» (3 хв)
 
-🎤 «Зараз ми в стані після воркшопу 1. Для Claude контекст є. Для Gemini — нічого. Ставлю Gemini одне й те саме питання двічі.»
+🎤 «Зараз ми в стані після воркшопу 1. Для Claude контекст є. Для Antigravity — нічого: `CLAUDE.md` він не читає. Ставлю Antigravity одне й те саме питання двічі.»
 
-⌨️ `gemini`
+⌨️ `agy`
+⌨️ `/context` → у Rules порожньо (лише глобальні, якщо є).
 
 💬
 ```text
@@ -114,7 +115,9 @@ Where should the logic for approving an application go in this repo, and how exa
 🖥 Чекати відповідь (~20 с). Очікувано: загальна порада — «у контролері / роуті, зменшити лічильник», можливо «перевірити, що місця є, і оновити».
 🎤 «Це правдоподібно. І це саме той варіант, який команда відкинула в ADR-0007: "прочитати, перевірити, записати" ламається, коли два ліди схвалюють одночасно.»
 
-⌨️ `/quit`
+⚠️ Якщо агент почне сам відкривати `docs/adr/` — зупинити: важливо, що він знає *до* того, як піде шукати.
+
+Вийти з `agy`.
 
 ### Що змінилось у step-07 (3 хв)
 
@@ -123,22 +126,22 @@ Where should the logic for approving an application go in this repo, and how exa
 🎤 «Принцип — одне джерело правил, решта на нього посилається.»
 
 🖥 `AGENTS.md` у корені — прогорнути.
-🎤 «Це колишній `CLAUDE.md` без специфіки Claude. Формат `AGENTS.md` читають Gemini, Copilot, Codex і ще з десяток інструментів.»
+🎤 «Це колишній `CLAUDE.md` без специфіки Claude. Формат `AGENTS.md` читають Antigravity, Copilot, Codex і ще з десяток інструментів — без жодних налаштувань.»
 
 🖥 `CLAUDE.md`
 🎤 «А тут один рядок — `@AGENTS.md` — імпорт, плюс те, що стосується лише Claude.»
 
-🖥 `.gemini/settings.json`
-🎤 «Три рядки: Gemini, читай `AGENTS.md`.»
+🖥 `.agents/rules/api.md`
+🎤 «А тут пастка. Правила для `apps/api` лежать у `apps/api/AGENTS.md`. Claude їх підхоплює, Antigravity — ні: він не читає `AGENTS.md` з підпапок. Тому тут правило "коли працюєш з `apps/api/**`" і include того самого файлу. Не копія — посилання. Однакова назва файлу ще не означає однакову поведінку інструментів.»
 
-🖥 `.gemini/commands/implement-story.toml`
-🎤 «І процедури. Це не копія скіла Claude — це вставка: `@{.claude/skills/implement-story/SKILL.md}`. Одна процедура, два інструменти. Змінили скіл — змінилась команда Gemini.»
+🖥 `.agents/skills/implement-story/SKILL.md`
+🎤 «І процедури. Формат скілів в Antigravity той самий, що в Claude, — `SKILL.md` з назвою й описом. А тіло — три рядки: "прочитай `.claude/skills/implement-story/SKILL.md` і виконай". Одна процедура, два інструменти. Змінили скіл — змінилась команда в обох.»
 
 ### Демо «після» (2 хв)
 
-⌨️ `gemini`
-⌨️ `/memory show`
-🎤 «Перша перевірка, коли асистент "не слухається": подивитись, що він реально завантажив. Ось `AGENTS.md` з кореня, ось `apps/api/AGENTS.md`.»
+⌨️ `agy` (нова сесія — правила читаються на старті)
+⌨️ `/context`
+🎤 «Перша перевірка, коли асистент "не слухається": подивитись, що він реально завантажив. Ось `AGENTS.md` у Rules, ось скіли.»
 
 💬 те саме питання:
 ```text
@@ -148,9 +151,9 @@ Where should the logic for approving an application go in this repo, and how exa
 🖥 Очікувано: `apps/api/src/services/applications`, інтерактивна транзакція, умовний `updateMany` з `availableSpots > 0` і перевірка `count`, ADR-0007, тест на гонку.
 🎤 «Модель та сама. Питання те саме. Змінився лише контекст.»
 
-⌨️ `/quit`
+Вийти з `agy`.
 
-⚠️ Якщо Gemini не відповідає за 40 секунд — `workshop-2/demo/07-before.md` і `07-after.md`.
+⚠️ Якщо Antigravity не відповідає за 40 секунд — `workshop-2/demo/07-before.md` і `07-after.md`.
 
 ### Історія «контекст застаріває» (2 хв)
 
@@ -162,7 +165,7 @@ Where should the logic for approving an application go in this repo, and how exa
 
 **Контекст — це код.** Його комітять, рев'юять і оновлюють у тому ж PR, що й код, який він описує. Погана інструкція шкодить тихо — кожному в команді, щодня.
 
-🎤 Наостанок: «Хук, який у Claude блокує редагування вимог, у Gemini не працює — там це лише рядок у `AGENTS.md`. Запобіжник — не те саме, що інструкція.»
+🎤 Наостанок: «Хук, який у Claude блокує редагування вимог, в Antigravity не працює — там це лише рядок у `AGENTS.md`. Запобіжник — не те саме, що інструкція.»
 
 ---
 
@@ -231,7 +234,7 @@ Write the API tests first, one per scenario, run them, and show me that they fai
 ```ts
 it.each(['orest lead!', 'abc'])(
 ```
-🖥 Дочекатись inline-підказки Gemini Code Assist (або Copilot) → Tab.
+🖥 Дочекатись inline-підказки Antigravity (або Copilot) → Tab.
 🎤 «Агент — для архітектурних кроків, автодоповнення — для механічних. Таблиця кейсів — ідеальний випадок.»
 🖥 Подивитись, що він згенерував. Зазвичай перевіряє лише статус.
 🎤 «Помітили? Перевіряє лише `400`. Тримайте в голові — це наш наступний крок.»
@@ -356,7 +359,7 @@ git checkout -- apps/api/src/middleware/validate.ts && rm apps/api/tests/weak.te
 
 ### Локальний рев'юер — те, що є в кожного (2 хв)
 
-🎤 «Copilot code review є не в усіх. Але рев'юер, що читає документи проєкту, можна запустити локально — в Claude це агент `architecture-reviewer`, у Gemini — `/arch-review`.»
+🎤 «Copilot code review є не в усіх. Але рев'юер, що читає документи проєкту, можна запустити локально — в Claude це агент `architecture-reviewer`, в Antigravity — `/arch-review`.»
 
 🖥 `workshop-2/demo/10-review-results.md` — таблиця.
 🎤
@@ -477,13 +480,13 @@ pnpm install
 cp apps/api/.env.example apps/api/.env
 pnpm db:migrate
 pnpm test
-Потрібні Node 20+, pnpm, і Claude Code або Gemini CLI.
+Потрібні Node 20+, pnpm, і Claude Code або Antigravity (IDE чи `agy`).
 ```
 
 ### На сесії
 
 🎤
-Пари — хто з ким, у чаті. Бажано один з Claude, другий з Gemini, щоб порівняти. Кожна пара бере одну історію: **US-02, US-03 або US-09**. Гілка від `step-08`:
+Пари — хто з ким, у чаті. Бажано один з Claude, другий з Antigravity, щоб порівняти. Кожна пара бере одну історію: **US-02, US-03 або US-09**. Гілка від `step-08`:
 
 🖥 У чат:
 ```text
@@ -503,7 +506,7 @@ git switch -c pair/us-02 step-08
 5. Чого ШІ не зробив і довелось людині
 ```
 
-🎤 «Старт: `/implement-story US-02` — у Claude чи в Gemini, однаково.»
+🎤 «Старт: `/implement-story US-02` — у Claude чи в Antigravity, однаково.»
 
 ⚠️ За 2 хв до кінця: «Допишіть рядки, навіть якщо дійшли лише до плану.» Прочитати вголос 2 найцікавіші відповіді з документа.
 
@@ -545,7 +548,7 @@ git switch -c pair/us-02 step-08
 |---|---|
 | `go.sh`: «Working tree has uncommitted changes» | ⌨️ `./workshop/go.sh discard` → `y` (або `git status --short`, щоб побачити, що саме) |
 | Агент думає довше 2 хв | Esc → `go.sh discard` → наступний тег. 🎤 «Ось результат того самого промпта з учора.» |
-| Gemini / Claude не відповідає (мережа) | Крок 7 — `demo/07-before.md`, `07-after.md`; крок 10 — `demo/10-copilot-review.md`, `demo/10-review-results.md` |
+| Antigravity / Claude не відповідає (мережа) | Крок 7 — `demo/07-before.md`, `07-after.md`; крок 10 — `demo/10-copilot-review.md`, `demo/10-review-results.md` |
 | Тести падають з помилкою Prisma (`@prisma/client did not initialize`) | ⌨️ `pnpm db:generate` |
 | `pnpm dev` — API не стартує | перевірити `apps/api/.env`; порт 3000 зайнятий — `lsof -i :3000` |
 | Відстаєте на 5+ хв | різати: Tab-момент у кроці 8, «руки» в кроці 9, F2 і живий крок агента в кроці 11 (одразу `git switch --detach step-11-done`) |

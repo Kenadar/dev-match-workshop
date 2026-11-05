@@ -45,5 +45,5 @@ US-06 PR in step 10. The web chat does not know the team decided where the Teleg
 Optional live: paste `webchat-prompt.md` into any web chat during the talk and show that the answer has the same
 kind of problems. Do not rely on it: use the saved one on screen.
 
-At the end of step 7, ask the same thing of Claude Code / Gemini CLI on `step-07` and compare with this table
+At the end of step 7, ask the same thing of Claude Code / Antigravity on `step-07` and compare with this table
 (`PATCH /me`, `updateProfileSchema`, `ApiError`, service, real DB tests).
