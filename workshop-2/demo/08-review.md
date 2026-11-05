@@ -1,6 +1,6 @@
 # What the architecture-reviewer found on step-08 (real run, before the commit)
 
-Agent: `.claude/agents/architecture-reviewer.md` (Antigravity: `/arch-review`). Input: the uncommitted Auth + US-01 diff.
+Agent: `.claude/agents/architecture-reviewer.md` (any other assistant: the same file as a prompt). Input: the uncommitted Auth + US-01 diff.
 Verdict: no blocking deviations; layering, validation, errors, DTOs, schema all conform. Findings — all fixed in step-08:
 
 | # | Finding | Source it cited | Fix |
